@@ -1,6 +1,6 @@
 drop table if exists ladderprice;
 create table ladderprice(
-	`id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '模块id',
+	`id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键id',
 	`name` varchar(32) default NULL COMMENT '阶梯价格名称',
 	`price_type` tinyint default 1 COMMENT '阶梯价格类型 1水 2电',
 	`price` decimal(10,2) default 0 COMMENT '价格（单价）',
