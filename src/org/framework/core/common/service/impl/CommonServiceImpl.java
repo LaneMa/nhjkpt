@@ -21,6 +21,7 @@ import nhjkpt.system.util.MyInterceptor;
 import org.hibernate.Interceptor;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.apache.commons.lang3.StringUtils;
 import org.framework.core.common.dao.ICommonDao;
 import org.framework.core.common.hibernate.qbc.CriteriaQuery;
 import org.framework.core.common.hibernate.qbc.HqlQuery;
@@ -435,6 +436,10 @@ public class CommonServiceImpl implements CommonService {
 	}
 	
 	public <T> List<T> queryHighchartData(String hql,String type,String origTable,String dayTable,String hourTable,String startDate, String endDate,Class entity,String linep){
+		String descCol = linep;
+		if(StringUtils.isBlank(descCol)) {
+			descCol = "receivetime";
+		}
 		List<T> listdata=null;
 		SimpleDateFormat sdf=null;
 		Calendar calendar=Calendar.getInstance();
@@ -455,7 +460,108 @@ public class CommonServiceImpl implements CommonService {
 				}else{
 					linep="";
 				}
-				hql="select new "+entity.getName()+"("+linep+"receivetime,sum(data) as data) "+hql+" and receivetime<='"+endDate+"' and receivetime>='"+startDate+"' group by date_format(receivetime,'%Y') order by receivetime";
+				hql="select new "+entity.getName()+"("+linep+"receivetime,sum(data) as data) "+hql+" and receivetime<='"+endDate+"' and receivetime>='"+startDate+"' group by date_format(receivetime,'%Y') order by "+descCol;
+				listdata=this.findHql(hql);
+			}catch(Exception e){
+			}
+		}else if(type.equals("month")){
+			//默认月份查询一年的数据
+			sdf=new SimpleDateFormat("yyyy-MM");
+			if(CommonUtil.isNull(endDate)){
+				endDate=sdf.format(calendar.getTime());;
+			}
+			if(CommonUtil.isNull(startDate)){
+				calendar.add(Calendar.YEAR, -1);
+				startDate=sdf.format(calendar.getTime());
+			}
+			try{
+				hql+=" and receivetime<='"+endDate+"' and receivetime>='"+startDate+"' order by "+descCol;
+				listdata=this.findHql(hql);
+			}catch(Exception e){
+			}
+		}else if(type.equals("day")){
+			try{
+				sdf=new SimpleDateFormat("yyyy-MM-dd");
+				//默认取本月往前推12天的数据
+				if(CommonUtil.isNull(endDate)){
+					endDate=sdf.format(calendar.getTime());;
+				}
+				if(CommonUtil.isNull(startDate)){
+					calendar.add(Calendar.DATE, -11);
+					startDate=sdf.format(calendar.getTime());
+				}
+				hql+=" and receivetime<='"+endDate+" 24"+"' and receivetime>='"+startDate+"' order by "+descCol;
+				tables=findTable(startDate, endDate, dayTable);
+				Interceptor interceptor=new MyInterceptor(origTable,tables);
+				Session session=getSession(interceptor);
+				Query query=session.createQuery(hql);
+//				query.setDate(0, sdf.parse(endDate));
+//				query.setDate(1, sdf.parse(startDate));
+				listdata=query.list();
+				if(session!=null){
+					session.clear();
+					session.close();
+				}
+			}catch(Exception e){
+				
+			}
+		}else{
+			try{
+				sdf=new SimpleDateFormat("yyyy-MM-dd HH");
+				//默认取本月往前推12天的数据
+				if(CommonUtil.isNull(endDate)){
+					endDate=sdf.format(calendar.getTime());;
+				}
+				if(CommonUtil.isNull(startDate)){
+					calendar.add(Calendar.HOUR, -11);
+					startDate=sdf.format(calendar.getTime());
+				}
+				hql+=" and receivetime<='"+endDate+"' and receivetime>='"+startDate+"' order by "+descCol;
+				tables=findTable(startDate, endDate, hourTable);
+				Interceptor interceptor=new MyInterceptor(origTable,tables);
+				Session session=getSession(interceptor);
+				Query query=session.createQuery(hql);
+//				query.setDate(0, sdf.parse(endDate));
+//				query.setDate(1, sdf.parse(startDate));
+				listdata=query.list();
+				if(session!=null){
+					session.clear();
+					session.close();
+				}
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+			
+			
+			
+		}
+		
+		//System.out.println("queryHighchartData1 sql====:"+hql);
+		return listdata;
+	}
+	
+	public <T> List<T> queryHighchartDataBuild(String hql,String type,String origTable,String dayTable,String hourTable,String startDate, String endDate,Class entity,String linep){
+		List<T> listdata=null;
+		SimpleDateFormat sdf=null;
+		Calendar calendar=Calendar.getInstance();
+		String tables[]=null;
+		if(type.equals("year")){
+			//默认月份查询一年的数据
+			sdf=new SimpleDateFormat("yyyy");
+			if(CommonUtil.isNull(endDate)){
+				endDate=sdf.format(calendar.getTime());;
+			}
+			if(CommonUtil.isNull(startDate)){
+				calendar.add(Calendar.YEAR, -11);
+				startDate=sdf.format(calendar.getTime());
+			}
+			try{
+				if(!CommonUtil.isNull(linep)){
+					linep+=",";
+				}else{
+					linep="";
+				}
+				hql="select new "+entity.getName()+"("+linep+"receivetime,sum(data) as data) "+hql+" and receivetime<='"+endDate+"' and receivetime>='"+startDate+"' group by date_format(receivetime,'%Y') order by su.buildingid";
 				listdata=this.findHql(hql);
 			}catch(Exception e){
 			}
@@ -534,7 +640,6 @@ public class CommonServiceImpl implements CommonService {
 		//System.out.println("queryHighchartData1 sql====:"+hql);
 		return listdata;
 	}
-	
 	
 	
 	
