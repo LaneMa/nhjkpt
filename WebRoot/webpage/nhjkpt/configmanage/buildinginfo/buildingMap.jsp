@@ -9,6 +9,10 @@
 <link rel=stylesheet type=text/css href="plug-in/jquery-plugs/qtip/qtip.css"></link>
 </head>
 <body>
+	<c:forEach items="${mapList}" var="item">
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a href="#" onclick="changeImg('${item.mapAddr}');">地图 ${item.id }</a>  
+	</c:forEach>
 	<div id="map"></div>
 </body>
 </html>
@@ -16,7 +20,7 @@
 var jg;
 $(document).ready(function() {
 	jg= new jsGraphics("map");
-	jg.drawImage("webpage/images/map.jpg",0,30,950,572);
+	jg.drawImage("${firstAddr}",0,30,950,572);
 	loadbuilding();
 	if('${id}'){
 		showtip('${id}');
@@ -26,6 +30,21 @@ $(document).ready(function() {
 		}
 	}
 });
+
+function changeImg(mapAddr ){
+	$("#map").html("");
+	jg= new jsGraphics("map");
+	jg.drawImage(mapAddr,0,30,950,572);
+	loadbuilding();
+	if('${id}'){
+		showtip('${id}');
+	}else{
+		if('${type}'==''){
+			document.ondblclick=initialize;
+		}
+	}
+}
+
 var buildingTip;
 function showtip(id){
 	if(buildingTip){
@@ -57,7 +76,7 @@ function openWindow(){
 }
 function loadbuilding(){
 	if('${type}'==''){
-		jg.drawString("<input type='button' value='全屏' onclick='openWindow();'/>",10,10);
+		//jg.drawString("<input type='button' value='全屏' onclick='openWindow();'/>",10,10);
 	}
 	$.ajax({
 		type : "POST",
