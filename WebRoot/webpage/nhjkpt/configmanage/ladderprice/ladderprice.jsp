@@ -8,137 +8,46 @@
  </head>
  <body style="overflow-y: hidden" scroll="no">
   <t:formvalid formid="formobj" dialog="true" usePlugin="password" layout="table" action="ladderpricecontroller.do?save">
-			<input id="id" name="id" type="hidden" value="${lightingPage.id }">
+			<input id="id" name="id" type="hidden" value="${ladderPrice.id }">
 			<table style="width: 600px;" cellpadding="0" cellspacing="1" class="formtable">
 				<tr>
 					<td align="right">
 						<label class="Validform_label">
-							楼层id:
+							阶梯价格名称:
 						</label>
 					</td>
 					<td class="value">
-						<input class="inputxt" id="floorid" name="floorid" ignore="ignore"
-							   value="${lightingPage.floorid}">
+						<input class="inputxt" id="name" name="name" ignore="ignore"
+							   value="${ladderPrice.name}">
 						<span class="Validform_checktip"></span>
 					</td>
 				</tr>
 				<tr>
 					<td align="right">
 						<label class="Validform_label">
-							楼id:
+							阶梯价格类型:
 						</label>
 					</td>
 					<td class="value">
-						<input class="inputxt" id="buildingid" name="buildingid" ignore="ignore"
-							   value="${lightingPage.buildingid}">
-						<span class="Validform_checktip"></span>
+						<select name="priceType">
+							<c:forEach items="${priceTypeList}" var="item">
+								<option value="${item.priceType}"
+									<c:if test="${item.priceType==ladderPrice.priceType }">selected="selected"</c:if>>
+									${item.priceTypeName}
+								</option>
+							</c:forEach>
+						</select>
 					</td>
 				</tr>
 				<tr>
 					<td align="right">
 						<label class="Validform_label">
-							教室id:
+							价格:
 						</label>
 					</td>
 					<td class="value">
-						<input class="inputxt" id="roomid" name="roomid" ignore="ignore"
-							   value="${lightingPage.roomid}">
-						<span class="Validform_checktip"></span>
-					</td>
-				</tr>
-				<tr>
-					<td align="right">
-						<label class="Validform_label">
-							控制类型:
-						</label>
-					</td>
-					<td class="value">
-						<input class="inputxt" id="controlType" name="controlType" ignore="ignore"
-							   value="${lightingPage.controlType}">
-						<span class="Validform_checktip"></span>
-					</td>
-				</tr>
-				<tr>
-					<td align="right">
-						<label class="Validform_label">
-							控制数据:
-						</label>
-					</td>
-					<td class="value">
-						<input class="inputxt" id="controlData" name="controlData" ignore="ignore"
-							   value="${lightingPage.controlData}">
-						<span class="Validform_checktip"></span>
-					</td>
-				</tr>
-				<tr>
-					<td align="right">
-						<label class="Validform_label">
-							光照度:
-						</label>
-					</td>
-					<td class="value">
-						<input class="inputxt" id="lightFalls" name="lightFalls" ignore="ignore"
-							   value="${lightingPage.lightFalls}">
-						<span class="Validform_checktip"></span>
-					</td>
-				</tr>
-				<tr>
-					<td align="right">
-						<label class="Validform_label">
-							人数:
-						</label>
-					</td>
-					<td class="value">
-						<input class="inputxt" id="userNum" name="userNum" ignore="ignore"
-							   value="${lightingPage.userNum}" datatype="n">
-						<span class="Validform_checktip"></span>
-					</td>
-				</tr>
-				<tr>
-					<td align="right">
-						<label class="Validform_label">
-							灯数:
-						</label>
-					</td>
-					<td class="value">
-						<input class="inputxt" id="lightNum" name="lightNum" ignore="ignore"
-							   value="${lightingPage.lightNum}" datatype="n">
-						<span class="Validform_checktip"></span>
-					</td>
-				</tr>
-				<tr>
-					<td align="right">
-						<label class="Validform_label">
-							灯状态:
-						</label>
-					</td>
-					<td class="value">
-						<input class="inputxt" id="lightType" name="lightType" ignore="ignore"
-							   value="${lightingPage.lightType}">
-						<span class="Validform_checktip"></span>
-					</td>
-				</tr>
-				<tr>
-					<td align="right">
-						<label class="Validform_label">
-							保留1:
-						</label>
-					</td>
-					<td class="value">
-						<input class="inputxt" id="retain1" name="retain1" ignore="ignore"
-							   value="${lightingPage.retain1}">
-						<span class="Validform_checktip"></span>
-					</td>
-				</tr>
-				<tr>
-					<td align="right">
-						<label class="Validform_label">
-							保留2:
-						</label>
-					</td>
-					<td class="value">
-						<input class="inputxt" id="retain2" name="retain2" ignore="ignore"
-							   value="${lightingPage.retain2}">
+						<input class="inputxt" id="price" name="price" ignore="ignore"
+							   value="${ladderPrice.price}">
 						<span class="Validform_checktip"></span>
 					</td>
 				</tr>

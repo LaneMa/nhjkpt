@@ -5,8 +5,9 @@
   <t:datagrid name="ladderPriceList" title="阶梯价格" actionUrl="ladderpricecontroller.do?datagrid" idField="id" fit="true">
    <t:dgCol title="编号" field="id" hidden="false"></t:dgCol>
    <t:dgCol title="名称" field="name" ></t:dgCol>
-   <t:dgCol title="类型" field="priceType" ></t:dgCol>
+   <t:dgCol title="类型" field="priceTypeName" ></t:dgCol>
    <t:dgCol title="单价" field="price" ></t:dgCol>
+   <t:dgCol title="操作" field="opt" width="100"></t:dgCol>
    <t:dgDelOpt title="删除" url="ladderpricecontroller.do?del&id={id}" />
    <t:dgToolBar title="录入" icon="icon-add" url="ladderpricecontroller.do?addorupdate" funname="add"></t:dgToolBar>
    <t:dgToolBar title="编辑" icon="icon-edit" url="ladderpricecontroller.do?addorupdate" funname="update"></t:dgToolBar>

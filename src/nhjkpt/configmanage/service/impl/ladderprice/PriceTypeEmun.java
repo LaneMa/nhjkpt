@@ -12,6 +12,16 @@ public enum PriceTypeEmun {
 		this.type = type;
 		this.typeName = typeName;
 	}
+	
+	public static String getPriceTypeName(Integer type) {
+		PriceTypeEmun[] emuns = PriceTypeEmun.values();
+		for(PriceTypeEmun e : emuns) {
+			if(type.intValue() == e.getType().intValue()) {
+				return e.getTypeName();
+			}
+		}
+		return null;
+	}
 
 	public Integer getType() {
 		return type;

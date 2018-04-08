@@ -1,5 +1,8 @@
 package nhjkpt.configmanage.controller.ladderprice;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -19,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import nhjkpt.configmanage.entity.ladderprice.LadderPriceEntity;
+import nhjkpt.configmanage.service.impl.ladderprice.PriceTypeEmun;
 import nhjkpt.configmanage.service.ladderprice.LadderPriceServiceI;
 import nhjkpt.system.service.SystemService;
 
@@ -78,6 +82,10 @@ public class LadderPriceController extends BaseController {
 		//查询条件组装器
 		org.framework.core.extend.hqlsearch.HqlGenerateUtil.installHql(cq, ladderPrice);
 		this.ladderPriceService.getDataGridReturn(cq, true);
+		List<LadderPriceEntity> entityList = dataGrid.getReaults();
+		for(LadderPriceEntity entity : entityList) {
+			entity.setPriceTypeName(PriceTypeEmun.getPriceTypeName(entity.getPriceType()));
+		}
 		TagUtil.datagrid(response, dataGrid);
 	}
 
@@ -138,8 +146,17 @@ public class LadderPriceController extends BaseController {
 	public ModelAndView addorupdate(LadderPriceEntity ladderPrice, HttpServletRequest req) {
 		if (StringUtil.isNotEmpty(ladderPrice.getId())) {
 			ladderPrice = ladderPriceService.getEntity(LadderPriceEntity.class, ladderPrice.getId());
-			req.setAttribute("ladderPricePage", ladderPrice);
+			req.setAttribute("ladderPrice", ladderPrice);
 		}
+		
+		List<PriceTypeVo> priceTypeList = new ArrayList<PriceTypeVo>();
+		for(int i = 0; i < PriceTypeEmun.values().length ; i++) {
+			PriceTypeVo vo = new PriceTypeVo();
+			vo.setPriceType(PriceTypeEmun.values()[i].getType());
+			vo.setPriceTypeName(PriceTypeEmun.values()[i].getTypeName());
+			priceTypeList.add(vo);
+		}
+		req.setAttribute("priceTypeList", priceTypeList);
 		return new ModelAndView("nhjkpt/configmanage/ladderprice/ladderprice");
 	}
 }
