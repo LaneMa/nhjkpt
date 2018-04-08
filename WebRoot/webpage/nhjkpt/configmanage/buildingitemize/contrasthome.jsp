@@ -18,5 +18,8 @@
 <c:if test="${id=='conrastbuilding' }">
 	<t:tab href="buildingItemizeController.do?stacurveBuilding" icon="icon-search" title="能耗比较" id="pnode"></t:tab>
 </c:if>
+<c:if test="${id=='conrastbuildingsum' }">
+	<t:tab href="buildingItemizeController.do?stacurveBuildingsum" icon="icon-search" title="能耗比较" id="pnode"></t:tab>
+</c:if>
  </t:tabs>
 </body>

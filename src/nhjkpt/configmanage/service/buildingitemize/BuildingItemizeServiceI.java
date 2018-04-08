@@ -21,6 +21,8 @@ public interface BuildingItemizeServiceI extends CommonService{
 	
 	List<Highchart> queryHighchartBuilding(String buildingid,String itemizeid, String type,String startDate, String endDate);
 	
+	List<Highchart> queryHighchartBuildingsum(String buildingid, String type,String startDate, String endDate);
+	
 	List<Highchart> queryHighchartDate(String buildingid,String itemizeid, String type,String[] startDate, String[] endDate);
 
 	List<Highchart> queryHighchartpie(String buildingid, String itemizeid,String type, String startDate, String endDate);

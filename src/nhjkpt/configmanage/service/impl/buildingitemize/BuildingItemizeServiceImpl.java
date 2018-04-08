@@ -190,6 +190,60 @@ public class BuildingItemizeServiceImpl extends CommonServiceImpl implements Bui
 		}
 		return listhc;
 	}
+	
+	@Override
+	public List<Highchart> queryHighchartBuildingsum(String buildingid, String type,String startDate, String endDate) {
+		if(CommonUtil.isNull(type)){
+			type="-1";
+		}
+		List<Highchart> listhc=new ArrayList<Highchart>();
+		List<Map<String, Object>> lt = null;
+		Highchart hc = null;
+		Map<String, Object> map=null;
+		List<BuildingMonthItemizeEntity> listdata=null;
+		String hql=" from BuildingMonthItemizeEntity where  1=1  ";
+		if(!CommonUtil.isNull(buildingid)){
+			if(buildingid.indexOf(",")<0){
+				hql+=" and buildingid ='"+buildingid+"'";
+			}else{
+				buildingid=buildingid.replaceAll(",", "','");
+				hql+=" and buildingid in('"+buildingid+"')";
+			}
+		}
+		listdata=queryHighchartData(hql, type, "buildingmonthitemize", "buildingdayitemize", "buildinghouritemize", startDate, endDate,BuildingMonthItemizeEntity.class,"itemizeid");
+		hql=" from BuildinginfoEntity where 1=1";
+		if(!CommonUtil.isNull(buildingid)){
+			if(buildingid.indexOf(",")<0){
+				hql+=" and buildingid ='"+buildingid+"'";
+			}else{
+				hql+=" and buildingid in ('"+buildingid+"')";
+			}
+		}
+		List<BuildinginfoEntity> listBuilding=this.findByQueryString(hql);
+		//每一个分类显示一条线
+		for(BuildinginfoEntity building:listBuilding){
+			lt = null;
+			hc = new Highchart();
+			hc.setName(building.getBuildingname());
+			hc.setType("column");
+			for(BuildingMonthItemizeEntity build:listdata){
+				if(building.getBuildingid().equals(build.getBuildingid())){
+					if(lt==null){
+						lt = new ArrayList<Map<String, Object>>();
+					}
+					map = new HashMap<String, Object>();
+					map.put("name", findName(type, build.getReceivetime()));
+					map.put("y", CommonUtil.formateResult(build.getData()));
+					lt.add(map);
+				}
+			}
+			if(lt!=null){
+				hc.setData(lt);
+				listhc.add(hc);
+			}
+		}
+		return listhc;
+	}
 
 	@Override
 	public List<Highchart> queryHighchartDate(String buildingid,String itemizeid, String type,String[] startDate, String[] endDate) {

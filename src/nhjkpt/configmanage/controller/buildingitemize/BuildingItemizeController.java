@@ -289,6 +289,16 @@ public class BuildingItemizeController extends BaseController {
 	public ModelAndView stacurveBuilding(HttpServletRequest req) {
 		return new ModelAndView("nhjkpt/configmanage/buildingitemize/stacurveBuilding");
 	}
+	
+	/**
+	 * 学校用能总量按分类进行统计比较
+	 * 
+	 * @return
+	 */
+	@RequestMapping(params = "stacurveBuildingsum")
+	public ModelAndView stacurveBuildingsum(HttpServletRequest req) {
+		return new ModelAndView("nhjkpt/configmanage/buildingitemize/stacurveBuildingsum");
+	}
 	/**
 	 * 获取图形数据
 	 * @param request
@@ -300,6 +310,19 @@ public class BuildingItemizeController extends BaseController {
 	@ResponseBody
 	public List<Highchart> queryBroswerBarBuilding(String buildingid,String itemizeid,String type,String startDate,String endDate,HttpServletRequest request,String reportType, HttpServletResponse response) {
 		return buildingItemizeService.queryHighchartBuilding(buildingid,itemizeid, type, startDate, endDate);
+	}
+	
+	/**
+	 * 获取图形数据
+	 * @param request
+	 * @param reportType
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping(params = "queryBroswerBarBuildingsum")
+	@ResponseBody
+	public List<Highchart> queryBroswerBarBuildingsum(String buildingid,String type,String startDate,String endDate,HttpServletRequest request,String reportType, HttpServletResponse response) {
+		return buildingItemizeService.queryHighchartBuildingsum(buildingid, type, startDate, endDate);
 	}
 	/**
 	 * 学校用能总量按分类进行统计比较
@@ -420,6 +443,10 @@ public class BuildingItemizeController extends BaseController {
 		comboTree=new ComboTree();
 		comboTree.setId("conrastbuilding");
 		comboTree.setText("同时间同分类不同大楼");
+		comboTrees.add(comboTree);
+		comboTree=new ComboTree();
+		comboTree.setId("conrastbuildingsum");
+		comboTree.setText("同时间不同大楼总量对比");
 		comboTrees.add(comboTree);
 		req.setAttribute("contrast", comboTrees);
 		return comboTrees;
