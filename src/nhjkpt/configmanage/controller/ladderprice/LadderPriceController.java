@@ -159,4 +159,5 @@ public class LadderPriceController extends BaseController {
 		req.setAttribute("priceTypeList", priceTypeList);
 		return new ModelAndView("nhjkpt/configmanage/ladderprice/ladderprice");
 	}
+	
 }
