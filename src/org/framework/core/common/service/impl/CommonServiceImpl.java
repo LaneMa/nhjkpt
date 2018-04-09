@@ -489,7 +489,7 @@ public class CommonServiceImpl implements CommonService {
 				if(CommonUtil.isNull(startDate)){
 					calendar.add(Calendar.DATE, -11);
 					startDate=sdf.format(calendar.getTime());
-				}
+				} 
 				hql+=" and receivetime<='"+endDate+" 24"+"' and receivetime>='"+startDate+"' order by "+descCol;
 				tables=findTable(startDate, endDate, dayTable);
 				Interceptor interceptor=new MyInterceptor(origTable,tables);
