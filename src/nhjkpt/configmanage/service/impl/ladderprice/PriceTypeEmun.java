@@ -10,7 +10,7 @@ public enum PriceTypeEmun {
 	
 	private PriceTypeEmun(Integer type,String typeName) {
 		this.type = type;
-		this.typeName = typeName;
+		this.typeName = typeName; 
 	}
 	
 	public static String getPriceTypeName(Integer type) {
