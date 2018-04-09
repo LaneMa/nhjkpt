@@ -8,5 +8,5 @@ import nhjkpt.configmanage.entity.ladderprice.LadderPriceEntity;
 
 public interface LadderPriceServiceI extends CommonService{
 	
-	List<LadderPriceEntity> getEntityByType(Integer priceType);
+	List<LadderPriceEntity> getEntityByType(Integer priceType); 
 }
