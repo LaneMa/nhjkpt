@@ -484,7 +484,7 @@ public class CommonServiceImpl implements CommonService {
 				sdf=new SimpleDateFormat("yyyy-MM-dd");
 				//默认取本月往前推12天的数据
 				if(CommonUtil.isNull(endDate)){
-					endDate=sdf.format(calendar.getTime());;
+					endDate=sdf.format(calendar.getTime());
 				}
 				if(CommonUtil.isNull(startDate)){
 					calendar.add(Calendar.DATE, -11);
