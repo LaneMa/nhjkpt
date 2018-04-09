@@ -21,7 +21,7 @@ public class LadderPriceServiceImpl extends CommonServiceImpl implements LadderP
 
 	@Override
 	public List<LadderPriceEntity> getEntityByType(Integer priceType) {
-		List<LadderPriceEntity> list=null;
+		List<LadderPriceEntity> list=null; 
 //		Session session=null;
 //		try{
 //			session=getSession();

@@ -2,7 +2,7 @@ package nhjkpt.configmanage.service.impl.ladderprice;
 
 public enum PriceTypeEmun {
 	WATER(1,"水"),
-	ELECTRIC(2,"电");
+	ELECTRIC(2,"电"); 
 	
 	private Integer type;
 	
