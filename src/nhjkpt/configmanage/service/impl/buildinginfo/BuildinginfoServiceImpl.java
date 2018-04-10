@@ -80,6 +80,17 @@ public class BuildinginfoServiceImpl extends CommonServiceImpl implements Buildi
 	        double ret2 = bg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 			return ret2;
 		}
+
+
+
+		@Override
+		public List<BuildinginfoEntity> queryListByName(String buildName) {
+			String wherehql = " 1=1";
+			if(buildName != null && !buildName.trim().equals("")) {
+				wherehql = " buildingname like '%"+buildName+"%'";
+			}
+			return this.findHql(" from BuildinginfoEntity where " + wherehql);
+		}
 	
 	
 }

@@ -232,6 +232,14 @@ public class BuildinginfoController extends BaseController {
 	public List<BuildinginfoEntity> queryBuildings(HttpServletRequest request){
 		return systemService.getList(BuildinginfoEntity.class);
 	}
+	
+	@RequestMapping(params = "querybuildingsbyname")
+	@ResponseBody
+	public List<BuildinginfoEntity> queryBuildingsByName(HttpServletRequest request){
+		String buildName = request.getParameter("buildName");
+		return buildinginfoService.queryListByName(buildName);
+	}
+	
 	@RequestMapping(params = "queryBuildingsMessage")
 	@ResponseBody
 	public List<Map<String,Object>> queryBuildingsMessage(HttpServletRequest request){
