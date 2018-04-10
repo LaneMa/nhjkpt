@@ -100,13 +100,37 @@
 		//loadDataSum(suburl);
 		loadDataByAjax(suburl,"buildingdateline","建筑物的用能对比曲线","日期","用能","折线图");
 	}
+	
+	function buildNameSearch(){
+		var buildName = $("#buildName").val();
+		if (buildName==''){
+			$("#buildName").val('输入大楼名称');
+		}
+		
+		var url="buildinginfoController.do?querybuildingsbyname";
+		$.ajax({
+			type : "POST",
+			url : url,
+			data : {buildName : buildName},
+			success : function(jsondata) {
+				var data=eval(jsondata);
+				if(data){
+					var str = "<select name='buildingid' id='buildingid'><option value='-1'>--请选择--</option>";
+					for(var i=0;i<data.length;i++){
+						str += "<option value='"+data[i].id+"'>"+data[i].buildingname+"</option>";
+					}
+					str += "</select>";
+					$("#op_buildList").html(str);
+				}
+			}
+		});
+	}
 </script>
 </head>
-
-<table style="width: 600px;" cellpadding="0" cellspacing="1" class="formtable" style="overflow-y: hidden" scroll="no">
+<table style="width: 700px;" cellpadding="0" cellspacing="1" class="formtable" style="overflow-y: hidden" scroll="no">
 	<tr>
 		<td align="right"><label class="Validform_label">分类:</label></td>
-		<td class="value">
+		<td class="value" >
 			<t:comboTree url="itemizeController.do?itemizeTree" name="itemizeid" id="itemizeid"></t:comboTree> 
 			<span class="Validform_checktip"></span>
 		</td>
@@ -116,15 +140,22 @@
 			</label>
 		</td>
 		<td class="value">
-			<select name="buildingid" id="buildingid">
-				<option value="-1">--请选择--</option>
-				<c:forEach items="${buildinglist}" var="building">
-					<option value="${building.buildingid}">
-						${building.buildingname}
-					</option>
-				</c:forEach>
-			</select>
+			<span id="op_buildList">
+				<select name="buildingid" id="buildingid">
+					<option value="-1">--请选择--</option>
+						<c:forEach items="${buildinglist}" var="building">
+							<option value="${building.buildingid}">
+								${building.buildingname}
+							</option>
+						</c:forEach>
+				</select>
+			</span>
+			
+			<input type="text" id="buildName" value="输入大楼名称" style="width:100px" 
+			  onblur="buildNameSearch();"
+			  onfocus="if (this.value=='输入大楼名称') this.value=''"/>
 			<span class="Validform_checktip"></span>
+			
 		</td>
 		<td align="right">
 			<label class="Validform_label">
@@ -141,6 +172,7 @@
 			</select>
 		</td>
 	</tr>
+	
 	<tr>
 		<td align="right">
 			<label class="Validform_label">
